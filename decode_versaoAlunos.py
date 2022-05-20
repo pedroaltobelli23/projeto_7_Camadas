@@ -54,9 +54,7 @@ def main():
 
     index = pk.indexes(yf, thres=0.1, min_dist=50)
     lista_de_frequencias = []
-    for i in index:
-        lista_de_frequencias.append(xf[i])
-
+  
     tolerancia = 2
     #criando tabela de decodificacao
     dic_decode ={
@@ -105,20 +103,16 @@ def main():
             "freq1":1633,
              "freq2": 941},
         "#":{
-            "freq1":1206,
+            "freq1":1477,
             "freq2":941},
     }
-    listafreq1 = []
+ 
     for k, v in dic_decode.items():
         for freq in lista_de_frequencias:
-            # check if frec is in the range of the freq of the key
-            if freq >= k["freq1"] - tolerancia and freq <= v["freq1"] + tolerancia:
-                listafreq1.append(k)
-    # for k, v in dic_decode.items():
-    #     for freq in lista_de_frequencias:
-    #         # check if frec is in the range of the freq of the key
-    #         if freq >= v["freq2"] - tolerancia and freq <= v["freq2"] + tolerancia:
-    #             listafreq1.append(k)
+            if freq > v["freq1"]-tolerancia and freq < v["freq1"]+tolerancia:
+                for freq2 in lista_de_frequencias:
+                    if freq2 > v["freq2"]-tolerancia and freq2 < v["freq2"]+tolerancia:
+                        print(k)
     #encontre na tabela duas frequencias proximas às frequencias de pico encontradas e descubra qual foi a tecla
     #print a tecla.
 
