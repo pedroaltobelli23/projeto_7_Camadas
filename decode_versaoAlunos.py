@@ -23,7 +23,7 @@ def main():
     duration = 2  # tempo de amostragem em segundos
 
 
-    print('Captura começara em 5 segundos')
+    print('Captura começara em 2 segundos')
     sleep(2)
     print('------------------- GRAVAÇÃO INICIADA -------------------')
 
@@ -52,9 +52,73 @@ def main():
     #voce deve tambem evitar que dois picos proximos sejam identificados, pois pequenas variacoes na
     #frequencia do sinal podem gerar mais de um pico, e na verdade tempos apenas 1.
 
-    index = pk.indexes(yf, thres=.25, min_dist=500)
-    print(index)
+    index = pk.indexes(yf, thres=0.1, min_dist=50)
+    lista_de_frequencias = []
+    for i in index:
+        lista_de_frequencias.append(xf[i])
 
+    tolerancia = 2
+    #criando tabela de decodificacao
+    dic_decode ={
+        "0":{
+          "freq1":1339,
+          "freq2":941  
+        },
+        "1":{
+            "freq1":1206,
+            "freq2":697
+            },
+        "2":{
+            "freq1":1339,
+            "freq2":697},
+        "3":{
+            "freq1":1477,
+            "freq2":697},
+        "4":{
+            "freq1":1206,
+            "freq2":770},
+        "5":{
+            "freq1":1339,
+            "freq2":770},
+        "6":{
+            "freq1":1477,
+            "freq2":770},
+        "7":{
+            "freq1":1206,
+            "freq2":852},
+        "8":{
+            "freq1":1339,
+            "freq2":852},
+        "9":{
+            "freq1":1477,
+            "freq2":852},
+        "A":{
+            "freq1":1633,
+            "freq2":697},
+        "B":{
+            "freq1":1633,
+            "freq2":770},
+        "C":{
+            "freq1":1633,
+            "freq2":852},
+        "D":{
+            "freq1":1633,
+             "freq2": 941},
+        "#":{
+            "freq1":1206,
+            "freq2":941},
+    }
+    listafreq1 = []
+    for k, v in dic_decode.items():
+        for freq in lista_de_frequencias:
+            # check if frec is in the range of the freq of the key
+            if freq >= k["freq1"] - tolerancia and freq <= v["freq1"] + tolerancia:
+                listafreq1.append(k)
+    # for k, v in dic_decode.items():
+    #     for freq in lista_de_frequencias:
+    #         # check if frec is in the range of the freq of the key
+    #         if freq >= v["freq2"] - tolerancia and freq <= v["freq2"] + tolerancia:
+    #             listafreq1.append(k)
     #encontre na tabela duas frequencias proximas às frequencias de pico encontradas e descubra qual foi a tecla
     #print a tecla.
 
